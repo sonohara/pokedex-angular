@@ -1,3 +1,21 @@
+<div class="search-filter">
+  <form>
+    <mat-form-field style="width: 400px; margin-right: 10px">
+      <mat-label>Name or Number</mat-label>
+      <input matInput type="text" />
+      <mat-hint align="start">
+        Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!
+      </mat-hint>
+    </mat-form-field>
+    <button mat-flat-button color="primary">
+      <mat-icon fontIcon="search"></mat-icon>
+    </button>
+  </form>
+  <div class="search-banner">
+    <span> Search for a Pokémon by name or using its National Pokédex number. </span>
+  </div>
+</div>
+
 <ng-container *ngIf="state$ | async as state">
   <mat-grid-list cols="5" rowHeight="2:2">
     <ng-container *ngFor="let pokemon of state.pokemons">
