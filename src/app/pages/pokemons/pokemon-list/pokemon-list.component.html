@@ -1,19 +1,23 @@
-<mat-grid-list cols="5" rowHeight="2:2">
-  <ng-container *ngFor="let pokemon of pokemons">
-    <mat-grid-tile>
-      <a [routerLink]="['/pokemons', pokemon.name]">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{ pokemon.name }}</mat-card-title>
-            <mat-card-subtitle>{{ pokemon.id }}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [src]="pokemon.sprites.front_default" width="100" height="100" />
-          <mat-card-content>
-            <ng-container *ngFor="let type of pokemon.types">{{ type.type.name }}</ng-container>
-          </mat-card-content>
-        </mat-card>
-      </a>
-    </mat-grid-tile>
-  </ng-container>
-</mat-grid-list>
-<button mat-flat-button color="primary">Load more Pokémon</button>
+<ng-container *ngIf="state$ | async as state">
+  <mat-grid-list cols="5" rowHeight="2:2">
+    <ng-container *ngFor="let pokemon of state.pokemons">
+      <mat-grid-tile>
+        <a [routerLink]="['/pokemons', pokemon.name]" style="text-decoration: none">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ pokemon.name }}</mat-card-title>
+              <mat-card-subtitle>{{ pokemon.id | id }}</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image [src]="pokemon.sprites.front_default" width="100" height="100" />
+            <mat-card-content>
+              <ng-container *ngFor="let type of pokemon.types">
+                <app-pokemon-type [type]="$any(type.type.name)"></app-pokemon-type>
+              </ng-container>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </mat-grid-tile>
+    </ng-container>
+  </mat-grid-list>
+  <button mat-flat-button color="primary" (click)="fetchPokemons(state.pagination.page + 1)">Load more Pokémon</button>
+</ng-container>

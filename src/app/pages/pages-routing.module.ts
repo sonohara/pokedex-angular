@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'pokemons',
-    loadChildren: () => import('./pokemons/pokemons.module').then((m) => m.DashbordModule),
+    loadChildren: () => import('./pokemons/pokemons.module').then((m) => m.PokemonsModule),
   },
 ];
 
