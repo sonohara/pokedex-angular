@@ -20,20 +20,26 @@
   <mat-grid-list cols="5" rowHeight="2:2">
     <ng-container *ngFor="let pokemon of state.pokemons">
       <mat-grid-tile>
-        <a [routerLink]="['/pokemons', pokemon.name]" style="text-decoration: none">
-          <mat-card>
+        <mat-card class="pokemon-card">
+          <a [routerLink]="['/pokemons', pokemon.name]">
             <mat-card-header>
               <mat-card-title>{{ pokemon.name }}</mat-card-title>
               <mat-card-subtitle>{{ pokemon.id | id }}</mat-card-subtitle>
             </mat-card-header>
-            <img mat-card-image [src]="pokemon.sprites.front_default" width="100" height="100" />
+            <img
+              mat-card-image
+              [src]="pokemon.sprites.front_default"
+              width="90"
+              height="90"
+              style="background-color: #f2f2f2"
+            />
             <mat-card-content>
               <ng-container *ngFor="let type of pokemon.types">
                 <app-pokemon-type [type]="$any(type.type.name)"></app-pokemon-type>
               </ng-container>
             </mat-card-content>
-          </mat-card>
-        </a>
+          </a>
+        </mat-card>
       </mat-grid-tile>
     </ng-container>
   </mat-grid-list>
