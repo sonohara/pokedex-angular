@@ -1,47 +1,77 @@
-<div class="search-filter">
-  <form>
-    <mat-form-field style="width: 400px; margin-right: 10px">
-      <mat-label>Name or Number</mat-label>
-      <input matInput type="text" />
-      <mat-hint align="start">
-        Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!
-      </mat-hint>
-    </mat-form-field>
-    <button mat-flat-button color="primary">
-      <mat-icon fontIcon="search"></mat-icon>
-    </button>
-  </form>
-  <div class="search-banner">
-    <span> Search for a Pokémon by name or using its National Pokédex number. </span>
+<div class="wrapper">
+  <div class="search-filter">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <mat-form-field style="width: 400px; margin-right: 10px">
+        <mat-label>Name or Number</mat-label>
+        <input matInput type="text" formControlName="idOrName" />
+        <mat-hint align="start">
+          Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!
+        </mat-hint>
+      </mat-form-field>
+      <button mat-flat-button color="primary">
+        <mat-icon fontIcon="search"></mat-icon>
+      </button>
+    </form>
+    <div class="search-banner">
+      <span> Search for a Pokémon by name or using its National Pokédex number. </span>
+    </div>
   </div>
-</div>
 
-<ng-container *ngIf="state$ | async as state">
-  <mat-grid-list cols="5" rowHeight="2:2">
-    <ng-container *ngFor="let pokemon of state.pokemons">
-      <mat-grid-tile>
-        <mat-card class="pokemon-card">
-          <a [routerLink]="['/pokemons', pokemon.name]">
-            <mat-card-header>
-              <mat-card-title>{{ pokemon.name }}</mat-card-title>
-              <mat-card-subtitle>{{ pokemon.id | id }}</mat-card-subtitle>
-            </mat-card-header>
-            <img
-              mat-card-image
-              [src]="pokemon.sprites.front_default"
-              width="90"
-              height="90"
-              style="background-color: #f2f2f2"
-            />
-            <mat-card-content>
-              <ng-container *ngFor="let type of pokemon.types">
-                <app-pokemon-type [type]="$any(type.type.name)"></app-pokemon-type>
-              </ng-container>
-            </mat-card-content>
-          </a>
-        </mat-card>
-      </mat-grid-tile>
-    </ng-container>
-  </mat-grid-list>
-  <button mat-flat-button color="primary" (click)="fetchPokemons(state.pagination.page + 1)">Load more Pokémon</button>
-</ng-container>
+  <div>
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Personal data </mat-panel-title>
+          <mat-panel-description>
+            Type your name and age
+            <mat-icon>account_circle</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field appearance="fill">
+          <mat-label>First name</mat-label>
+          <input matInput />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Age</mat-label>
+          <input matInput type="number" min="1" />
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <ng-container *ngIf="state$ | async as state">
+    <div class="pokemon-list">
+      <mat-grid-list cols="5" rowHeight="2:2">
+        <ng-container *ngFor="let pokemon of state.pokemons">
+          <mat-grid-tile>
+            <mat-card class="pokemon-card">
+              <a [routerLink]="['/pokemons', pokemon.name]">
+                <mat-card-header>
+                  <mat-card-title>{{ pokemon.name }}</mat-card-title>
+                  <mat-card-subtitle>{{ pokemon.id | id }}</mat-card-subtitle>
+                </mat-card-header>
+                <img
+                  mat-card-image
+                  [src]="pokemon.sprites.front_default"
+                  width="90"
+                  height="90"
+                  style="background-color: #f2f2f2"
+                />
+                <mat-card-content>
+                  <ng-container *ngFor="let type of pokemon.types">
+                    <app-pokemon-type [type]="$any(type.type.name)"></app-pokemon-type>
+                  </ng-container>
+                </mat-card-content>
+              </a>
+            </mat-card>
+          </mat-grid-tile>
+        </ng-container>
+      </mat-grid-list>
+      <button mat-flat-button color="primary" (click)="fetchPokemons(state.pagination.page + 1)">
+        Load more Pokémon
+      </button>
+    </div>
+  </ng-container>
+</div>
