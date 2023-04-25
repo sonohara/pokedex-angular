@@ -8,6 +8,7 @@ import { ApiModule } from '@sonohara/pokeapi-typescript-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { PagesModule } from './pages/pages.module';
     // make sure to import the HttpClientModule in the AppModule only,
     // see https://github.com/angular/angular/issues/20575
     HttpClientModule,
+    SharedModule,
   ],
   bootstrap: [AppComponent],
 })

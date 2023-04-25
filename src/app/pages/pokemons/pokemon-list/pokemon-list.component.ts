@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectChange } from '@angular/material/select';
 import { BehaviorSubject, combineLatest, forkJoin, map } from 'rxjs';
 import { PokemonService, Pokemon, NamedAPIResource } from '@sonohara/pokeapi-typescript-angular';
 import { BgmComponent } from 'src/app/shared/bgm/bgm.component';
-import { MatSelectChange } from '@angular/material/select';
+import { LoadingService } from 'src/app/shared/loading/loading.service';
 
 type PokemonsState = {
   pokemons: Pokemon[];
@@ -74,8 +75,14 @@ export class PokemonListComponent implements OnInit {
   ];
   selectedSort = this.sorts[0].value;
 
-  constructor(private pokemonService: PokemonService, private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(
+    private pokemonService: PokemonService,
+    private loadingService: LoadingService,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
+  ) {
     this.paginator$.subscribe((paginator) => {
+      this.loadingService.start();
       forkJoin([
         ...this.pokemonResources
           .sort(paginator.sorter)
@@ -88,23 +95,13 @@ export class PokemonListComponent implements OnInit {
         this.pokemons$.next({
           pokemons: [...this.pokemons$.value.pokemons, ...pokemons],
         });
+        this.loadingService.finish();
       });
     });
   }
 
   ngOnInit(): void {
-    this.fetchPokemons();
-    this.snackBar.openFromComponent(BgmComponent);
-  }
-
-  paginate(page: number) {
-    this.paginator$.next({
-      ...this.paginator$.value,
-      page: page,
-    });
-  }
-
-  fetchPokemons() {
+    this.loadingService.start();
     this.pokemonService
       .getPokemons(9999, 0)
       .pipe(
@@ -120,6 +117,14 @@ export class PokemonListComponent implements OnInit {
         this.pokemonResources = resources;
         this.paginate(1);
       });
+    this.snackBar.openFromComponent(BgmComponent);
+  }
+
+  paginate(page: number) {
+    this.paginator$.next({
+      ...this.paginator$.value,
+      page: page,
+    });
   }
 
   search() {
