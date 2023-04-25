@@ -30,6 +30,31 @@
     </div>
   </form>
 
+  <div class="sort-filter">
+    <mat-card>
+      <mat-card-content style="padding-top: 5px; padding-bottom: 0">
+        <mat-grid-list cols="2" rowHeight="7:1">
+          <mat-grid-tile>
+            <button mat-flat-button color="accent">
+              <mat-icon fontIcon="sync"></mat-icon>
+              Suprise Me !
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" style="width: 100%">
+              <mat-label>Sort By</mat-label>
+              <mat-select [(value)]="selectedSort" (selectionChange)="sort($event)">
+                <mat-option *ngFor="let sort of sorts" [value]="sort.value">
+                  {{ sort.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <ng-container *ngIf="state$ | async as state">
     <div class="pokemon-list">
       <mat-grid-list cols="5" rowHeight="2:2">
@@ -38,12 +63,14 @@
             <mat-card class="pokemon-card">
               <a [routerLink]="['/pokemons', pokemon.name]">
                 <mat-card-header>
-                  <mat-card-title>{{ pokemon.name }}</mat-card-title>
+                  <mat-card-title style="font-size: medium; line-height: initial; height: 2.2em">{{
+                    pokemon.name
+                  }}</mat-card-title>
                   <mat-card-subtitle>{{ pokemon.id | id }}</mat-card-subtitle>
                 </mat-card-header>
                 <img
                   mat-card-image
-                  [src]="pokemon.sprites.front_default"
+                  [src]="pokemon.sprites.front_default ?? 'assets/no-image.png'"
                   width="90"
                   height="90"
                   style="background-color: #f2f2f2"
@@ -58,7 +85,7 @@
           </mat-grid-tile>
         </ng-container>
       </mat-grid-list>
-      <button mat-flat-button color="primary" (click)="fetchPokemons(state.pagination.page + 1)">
+      <button mat-flat-button color="accent" (click)="fetchPokemons(state.pagination.page + 1)">
         Load more Pokémon
       </button>
     </div>

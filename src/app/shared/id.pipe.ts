@@ -8,7 +8,6 @@ export class IdPipe implements PipeTransform {
     if (typeof value === 'number') {
       value = value.toString();
     }
-
-    return `#${value.padStart(4, '0')}`;
+    return `#${value.padStart(5, '0')}`;
   }
 }
