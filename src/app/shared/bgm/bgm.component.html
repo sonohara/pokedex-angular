@@ -1,0 +1,20 @@
+<div style="width: 300px">
+  <mat-form-field>
+    <mat-label>Track</mat-label>
+    <mat-select [(value)]="tracks.selected">
+      <mat-option *ngFor="let bgm of bgms" [value]="bgm">
+        {{ bgm }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-mini-fab color="primary" (click)="play()">
+    <mat-icon fontIcon="play_circle"></mat-icon>
+  </button>
+  <button mat-mini-fab color="primary" (click)="pause()">
+    <mat-icon fontIcon="pause_circle"></mat-icon>
+  </button>
+  <mat-slider min="0" max="1" step="0.01" class="volume-slider">
+    Volume: {{ volume }}
+    <input matSliderThumb [(value)]="volume" percentage="50" (valueChange)="changeVolume()" />
+  </mat-slider>
+</div>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { PokemonService, Pokemon } from '@sonohara/pokeapi-typescript-angular';
+import { BgmComponent } from 'src/app/shared/bgm/bgm.component';
 
 type State = {
   pokemons: Pokemon[];
@@ -30,10 +32,11 @@ export class PokemonListComponent implements OnInit {
     idOrName: '',
   });
 
-  constructor(private fb: FormBuilder, private pokemonService: PokemonService) {}
+  constructor(private pokemonService: PokemonService, private fb: FormBuilder, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.fetchPokemons(this.state$.value.pagination.page);
+    this.snackBar.openFromComponent(BgmComponent);
   }
 
   fetchPokemons(page: number, limit = 20) {
