@@ -35,7 +35,7 @@
       <mat-card-content style="padding-top: 5px; padding-bottom: 0">
         <mat-grid-list cols="2" rowHeight="7:1">
           <mat-grid-tile>
-            <button mat-flat-button color="accent">
+            <button mat-flat-button color="accent" (click)="shuffle()">
               <mat-icon fontIcon="sync"></mat-icon>
               Suprise Me !
             </button>
@@ -58,7 +58,7 @@
   <ng-container *ngIf="state$ | async as state">
     <div class="pokemon-list">
       <mat-grid-list cols="5" rowHeight="2:2">
-        <ng-container *ngFor="let pokemon of state.pokemons">
+        <ng-container *ngFor="let pokemon of state.pokemons.pokemons">
           <mat-grid-tile>
             <mat-card class="pokemon-card">
               <a [routerLink]="['/pokemons', pokemon.name]">
@@ -85,9 +85,7 @@
           </mat-grid-tile>
         </ng-container>
       </mat-grid-list>
-      <button mat-flat-button color="accent" (click)="fetchPokemons(state.pagination.page + 1)">
-        Load more Pokémon
-      </button>
+      <button mat-flat-button color="accent" (click)="paginate(state.paginator.page + 1)">Load more Pokémon</button>
     </div>
   </ng-container>
 </div>
