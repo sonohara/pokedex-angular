@@ -1,3 +1,102 @@
-<p>{{ (pokemon$ | async)?.name }}</p>
+<div class="pokemon-detail">
+  <div class="paginate" *ngIf="(state$ | async)?.paginate as paginate">
+    <mat-card class="paginate-prev">
+      <mat-card-content>
+        <a [routerLink]="['/pokemons/', paginate.prev]">
+          <mat-icon>navigate_before</mat-icon>
+          {{ paginate.prev }}
+        </a>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="paginate-next">
+      <mat-card-content>
+        <a [routerLink]="['/pokemons/', paginate.next]">
+          {{ paginate.next }}
+          <mat-icon>navigate_next</mat-icon>
+        </a>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-<a routerLink="/pokemons" mat-flat-button color="primary">Explore more Pokemon</a>
+  <div class="pokemon" *ngIf="(state$ | async)?.pokemon as pokemon">
+    <div class="pokemon-name">
+      <p>{{ pokemon.name }}</p>
+      <p>{{ pokemon.id | pokemonId }}</p>
+    </div>
+    <div class="pokemon-info-container">
+      <div class="pokemon-info-container1">
+        <div class="pokemon-image">
+          <img [src]="pokemon.sprites.front_default | orNoImage" width="96" height="96" />
+          <img [src]="pokemon.sprites.back_default | orNoImage" width="96" height="96" />
+          <img [src]="pokemon.sprites.front_shiny | orNoImage" width="96" height="96" />
+          <img [src]="pokemon.sprites.back_shiny | orNoImage" width="96" height="96" />
+        </div>
+        <div class="pokemon-status">
+          <p *ngFor="let stat of pokemon.stats">{{ stat.stat.name }} / {{ stat.base_stat }}</p>
+        </div>
+      </div>
+      <div class="pokemon-info-container2">
+        <div class="pokemon-describe" *ngIf="pokemon.species.flavor_text_entries.length">
+          <ng-container *ngFor="let flavor of pokemon.species.flavor_text_entries">
+            <p
+              *ngIf="flavor.language.name === 'en'"
+              [class.flavor_text]="flavor.version.name !== selected_flavor_version"
+              class="flavor_text"
+            >
+              {{ flavor.flavor_text }}
+            </p>
+          </ng-container>
+          <mat-chip-listbox>
+            <div>Versions</div>
+            <div>
+              <ng-container *ngFor="let flavor of pokemon.species.flavor_text_entries; index as i">
+                <mat-chip-option
+                  *ngIf="flavor.language.name === 'en'"
+                  [value]="flavor.version.name"
+                  [selected]="i === 0"
+                  (selectionChange)="selectFlavorText($event)"
+                  style="font-size: smaller"
+                >
+                  {{ flavor.version.name }}
+                </mat-chip-option>
+              </ng-container>
+            </div>
+          </mat-chip-listbox>
+        </div>
+        <div class="pokemon-base">
+          <p>Height: {{ pokemon.height }}</p>
+          <p>Weight: {{ pokemon.weight }}</p>
+          <p>Gender: {{ "TODO" }}</p>
+          <p>Category: {{ pokemon.species.name }}</p>
+          <p>
+            Abilities:
+            <ng-container *ngFor="let ability of pokemon.abilities"> {{ ability.ability.name }} <br /> </ng-container>
+          </p>
+        </div>
+        <div class="pokemon-type">
+          <div>Types</div>
+          <app-pokemon-type *ngFor="let type of pokemon.types" [type]="$any(type.type.name)"></app-pokemon-type>
+        </div>
+        <div class="pokemon-weakness">
+          <div>Weakness</div>
+          {{ "weakness" }}
+        </div>
+      </div>
+    </div>
+
+    <div class="pokemon-evolution">
+      <div>Evolutions</div>
+      <div>
+        <p>{{ pokemon.evolution_chain.chain.species.name }}</p>
+        <ng-container *ngFor="let evolve of pokemon.evolution_chain.chain.evolves_to">
+          <p>&gt; {{ evolve.species.name }}</p>
+          <ng-container *ngFor="let evolve of evolve.evolves_to">
+            <p>&gt; {{ evolve.species.name }}</p>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+    <a routerLink="/pokemons" mat-flat-button color="primary">Explore more Pokemon</a>
+  </div>
+</div>

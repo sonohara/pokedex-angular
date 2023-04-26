@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'id',
+  name: 'pokemonId',
 })
-export class IdPipe implements PipeTransform {
+export class PokemonIdPipe implements PipeTransform {
   transform(value: number | string): string {
     if (typeof value === 'number') {
       value = value.toString();
