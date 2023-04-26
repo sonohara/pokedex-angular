@@ -16,6 +16,15 @@
   max-width: 400px;
 }
 
+.advanced-search {
+  background: #a4a4a4;
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  mat-panel-description {
+    color: #fff;
+  }
+}
+
 .sort-filter {
   margin: 5px 0;
   background: #fff;
