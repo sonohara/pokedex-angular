@@ -41,7 +41,6 @@
             <p
               *ngIf="flavor.language.name === 'en'"
               [class.flavor_text]="flavor.version.name !== selected_flavor_version"
-              class="flavor_text"
             >
               {{ flavor.flavor_text }}
             </p>
@@ -87,11 +86,19 @@
     <div class="pokemon-evolution">
       <div>Evolutions</div>
       <div>
-        <p>{{ pokemon.evolution_chain.chain.species.name }}</p>
+        <p>
+          <a [routerLink]="['/pokemons/', pokemon.evolution_chain.chain.species.name]">
+            {{ pokemon.evolution_chain.chain.species.name }}
+          </a>
+        </p>
         <ng-container *ngFor="let evolve of pokemon.evolution_chain.chain.evolves_to">
-          <p>&gt; {{ evolve.species.name }}</p>
+          <p>
+            &gt; <a [routerLink]="['/pokemons/', evolve.species.name]">{{ evolve.species.name }}</a>
+          </p>
           <ng-container *ngFor="let evolve of evolve.evolves_to">
-            <p>&gt; {{ evolve.species.name }}</p>
+            <p>
+              &gt; <a [routerLink]="['/pokemons/', evolve.species.name]">{{ evolve.species.name }}</a>
+            </p>
           </ng-container>
         </ng-container>
       </div>
