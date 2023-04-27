@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiModule } from '@sonohara/pokeapi-typescript-angular';
 
@@ -16,7 +15,6 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
     PagesModule,
     ApiModule,
     // make sure to import the HttpClientModule in the AppModule only,
